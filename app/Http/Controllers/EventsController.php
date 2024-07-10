@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EventsRequest;
 use App\Models\Events;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class EventsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(EventsRequest $request)
     {
         // dd($request->all());
         $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
@@ -25,6 +26,7 @@ class EventsController extends Controller
             'name' => $request->name,
             'date' => $selectedDate,
             'responsible' => $request->responsible,
+            // 'state' => 
             'city' => $request->city,
             'neighborhood' => $request->neighborhood,
             'street' => $request->street,
@@ -34,27 +36,26 @@ class EventsController extends Controller
         ]);
 
         if ($request->hasFile('images')) {
-
             foreach ($request->file('images') as $photo) {
                 $path = $photo->store('public/' . $event->id);
-                $path = str_replace('public/', '', $path);
-
+                $path = str_replace('public/', 'storage/', $path); 
+    
                 $event->images()->create([
                     'photo_path' => $path
                 ]);
-            };
+            }
         }
     }
 
     public function edit($id)
     {
-        $event = Events::find($id);
+        $event = Events::find($id)->load('images');
         return Inertia::render('EditEvent', [
             'event' => $event
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(EventsRequest $request, $id)
     {
         $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
         $event = Events::find($id);
@@ -69,17 +70,16 @@ class EventsController extends Controller
             'complement' => $request->complement,
             'phone' => $request->phone,
         ]);
-        
-        if ($request->hasFile('images')) {
 
+        if ($request->hasFile('images')) {
             foreach ($request->file('images') as $photo) {
                 $path = $photo->store('public/' . $event->id);
-                $path = str_replace('public/', '', $path);
-
+                $path = str_replace('public/', 'storage/', $path); 
+    
                 $event->images()->create([
                     'photo_path' => $path
                 ]);
-            };
+            }
         }
     }
 

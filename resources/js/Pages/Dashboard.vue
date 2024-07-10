@@ -17,6 +17,7 @@ const form = useForm('post', route('events.store'), {
     name: '',
     date: '',
     responsible: '',
+    state: '',
     city: '',
     neighborhood: '',
     street: '',
@@ -27,7 +28,6 @@ const form = useForm('post', route('events.store'), {
 });
 
 const submit = () => {
-    
     form.submit({
         preserveScroll: true,
         onSuccess: () => {
@@ -110,7 +110,10 @@ const updatePage = (newPage) => {
 
 // Função para formatar a data da tabela
 const formatDate = (dateString) => {
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    const options = {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false
+    };
     return new Date(dateString).toLocaleDateString(undefined, options);
 };
 
@@ -223,7 +226,7 @@ const deleteEvent = () => {
                                             <v-container class="grid gap-4 mb-7">
                                                 <v-container>
                                                     <v-text-field label="Estado" v-model="form.state"
-                                                        variant="outlined"></v-text-field>  
+                                                        variant="outlined"></v-text-field>
                                                 </v-container>
                                                 <v-container>
                                                     <v-text-field label="Cidade" v-model="form.city"
