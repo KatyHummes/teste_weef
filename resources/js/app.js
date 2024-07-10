@@ -11,11 +11,17 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 import { md3 } from 'vuetify/blueprints'
+import VueTheMask from 'vue-the-mask'
+import { pt } from 'vuetify/locale'
 
 const vuetify = createVuetify({
   components,
   directives,
   blueprint: md3,
+  locale: {
+    locale: 'pt',
+    messages: { pt }
+  }
 })
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -28,6 +34,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(vuetify)
+            .use(VueTheMask)
             .mount(el);
     },
     progress: {
