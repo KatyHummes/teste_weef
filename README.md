@@ -1,7 +1,15 @@
 # Neste Projeto
+Neste projeto eu desenvolvi um sistema de gerenciamento de eventos, um grud com autenticação!
 
 ## Preview
-![image](./)
+- Pagina para Gerenciar os eventos
+![image](./Design/Gerenciamento.png)
+
+- Modal para Criar os eventos
+![image](./Design/Captura%20de%20tela%202024-07-10%20192202.png)
+
+- Pagina para Visualização e edição
+![image](./Design/Captura%20de%20tela%202024-07-10%20193327.png)
 
 ### Informações Tecnicas
 - Backend: foram utilizados php, Laravel e Inertia para desenvolvimento Backend
