@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->date('date');
             $table->string('responsible');
+            $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('neighborhood')->nullable();
             $table->string('street')->nullable();
-            $table->string('number')->nullable();
+            $table->decimal('number')->nullable();
             $table->longText('complement')->nullable();
             $table->string('phone');
             $table->timestamps();

@@ -13,6 +13,7 @@ class Events extends Model
         'name',
         'date',
         'responsible',
+        'state',
         'city',
         'neighborhood',
         'street',
