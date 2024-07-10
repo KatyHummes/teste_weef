@@ -23,10 +23,18 @@ class EventsRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'birth' => ['required', 'string', 'max:255'],
-            'cpf' => ['required', 'string', 'max:255'],
-            'sex' => ['required', 'string', 'max:255'],
-            'images' => 'mimes:jpg,jpeg,png|max:5'
+            'date' => ['required', 'string', 'max:255'],
+            'responsible' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'images' => 'required',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'required' => 'Este campo é obrigatório',
+            'string' => 'Este campo deve ser uma string',
+            'max' => 'Este campo deve ter no máximo 255 caracteres',
         ];
     }
 }

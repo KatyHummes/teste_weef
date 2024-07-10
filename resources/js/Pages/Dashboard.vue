@@ -87,7 +87,7 @@ const filteredevents = computed(() => {
     return props.events.filter(event => {
         return (
             event.name.toLowerCase().includes(searchTerm) ||
-            event.date.toLowerCase().includes(searchTerm) ||
+            event.date.toString().toLowerCase().includes(searchTerm) ||
             event.responsible.toString().toLowerCase().includes(searchTerm) ||
             event.phone.toLowerCase().includes(searchTerm)
         );

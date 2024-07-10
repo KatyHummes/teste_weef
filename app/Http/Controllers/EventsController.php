@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EventsRequest;
-use App\Models\Events;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -12,7 +12,7 @@ class EventsController extends Controller
 {
     public function index()
     {
-        $events = Events::all();
+        $events = Event::all();
         return Inertia::render('Dashboard', [
             'events' => $events
         ]);
@@ -22,7 +22,7 @@ class EventsController extends Controller
     {
         // dd($request->all());
         $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
-        $event = Events::create([
+        $event = Event::create([
             'name' => $request->name,
             'date' => $selectedDate,
             'responsible' => $request->responsible,
@@ -49,7 +49,7 @@ class EventsController extends Controller
 
     public function edit($id)
     {
-        $event = Events::find($id)->load('images');
+        $event = Event::find($id)->load('images');
         return Inertia::render('EditEvent', [
             'event' => $event
         ]);
@@ -58,7 +58,7 @@ class EventsController extends Controller
     public function update(EventsRequest $request, $id)
     {
         $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
-        $event = Events::find($id);
+        $event = Event::find($id);
         $event->update([
             'name' => $request->name,
             'date' => $selectedDate,
@@ -85,7 +85,7 @@ class EventsController extends Controller
 
     public function destroy($id)
     {
-        $event = Events::find($id);
+        $event = Event::find($id);
         $event->delete();
     }
 }

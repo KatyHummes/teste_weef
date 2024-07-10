@@ -1,11 +1,14 @@
 # Neste Projeto
 
 ## Preview
+![image](./)
 
 ### Informações Tecnicas
-- Backend:
+- Backend: foram utilizados php, Laravel e Inertia para desenvolvimento Backend
+e para o banco de dados usei MySQL.
 
-- Front-end:
+- Front-end: Desenvolvi uma interface simples usando Vue.js, Tailwind CSS
+e também o Vuetify para os componentes. E para o svg e icones escolhi os sites https://heroicons.com/ e https://undraw.co/illustrations
 
 ### How to use:
 - A versão do PHP utilizada no Projeto é PHP 8.2.11
@@ -31,13 +34,16 @@ php artisan serve
 ```
 npm run dev
 ```
-- execute as migrações: 
+- execute as migrações: (seeder são opcionais)
 ```
-php artisan migrate
+php artisan migrate --seed
 ```
-- access the URL: http://127.0.0.1:8000/
+- e finalmente execute este comando:
+```
+php artisan storage:link
+```
+- acessar a URL: http://127.0.0.1:8000/
 
 ## Links das Bibliotecas e outros usados no Projeto:
 https://jetstream.laravel.com/ para a autenticação e configurações iniciais,
-https://vuetifyjs.com/en/ e https://tailwindcss.com/ para alguns componentes e estruturas do front-end,
-https://undraw.co/illustrations para os svgs
+https://vuetifyjs.com/en/ e https://tailwindcss.com/ para alguns componentes e estruturas do front-end, https://undraw.co/illustrations para os svgs, https://www.npmjs.com/package/vue-toast-notification para as notificações de sucesso ou erro do frontend, https://www.npmjs.com/package/vue-the-mask para a mascara do telefone
