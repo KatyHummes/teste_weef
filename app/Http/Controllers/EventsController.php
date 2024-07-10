@@ -26,7 +26,7 @@ class EventsController extends Controller
             'name' => $request->name,
             'date' => $selectedDate,
             'responsible' => $request->responsible,
-            // 'state' => 
+            'state' => $request->state, 
             'city' => $request->city,
             'neighborhood' => $request->neighborhood,
             'street' => $request->street,
@@ -57,12 +57,15 @@ class EventsController extends Controller
 
     public function update(EventsRequest $request, $id)
     {
+        
+        // dd($request->all());
         $selectedDate = Carbon::parse($request->date)->format('Y-m-d');
         $event = Event::find($id);
         $event->update([
             'name' => $request->name,
             'date' => $selectedDate,
             'responsible' => $request->responsible,
+            'state' => $request->state, 
             'city' => $request->city,
             'neighborhood' => $request->neighborhood,
             'street' => $request->street,

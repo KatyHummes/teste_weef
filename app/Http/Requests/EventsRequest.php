@@ -26,7 +26,6 @@ class EventsRequest extends FormRequest
             'date' => ['required', 'string', 'max:255'],
             'responsible' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
-            'images' => 'required',
         ];
     }
     public function messages()

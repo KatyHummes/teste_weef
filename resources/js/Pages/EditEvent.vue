@@ -54,7 +54,7 @@ const onImageChange = (event) => {
 };
 
 function getImageUrl(path) {
-    return `/storage/${path}`;
+    return `/${path}`;
 }
 
 
@@ -64,15 +64,13 @@ function getImageUrl(path) {
     <AppLayout>
         <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
-
                 <v-container class="m-4">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-2xl font-bold">{{ event.name }}</h2>
+                        <h2 class="text-2xl font-bold mb-4">{{ event.name }}</h2>
                     </div>
-                    <v-carousel hide-delimiter-background show-arrows-on-hover>
+                    <v-carousel hide-delimiter-background>
                         <v-carousel-item v-for="image in event.images" :key="image.id">
-                            <v-img :src="getImageUrl(image.photo_path)" alt="Imagem do imóvel"
-                                class="w-full h-64 object-cover rounded-lg" />
+                            <v-img :src="getImageUrl(image.photo_path)" alt="Imagem do imóvel" class="carousel-image" />
                         </v-carousel-item>
                     </v-carousel>
                 </v-container>
