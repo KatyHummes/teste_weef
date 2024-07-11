@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, defineProps } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import { useForm } from 'laravel-precognition-vue';
+import { useForm } from 'laravel-precognition-vue-inertia';
 import { useToast } from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import AppLayout from '@/Layouts/AppLayout.vue';
@@ -11,6 +11,7 @@ const toast = useToast();
 const props = defineProps({
     events: Array,
 });
+
 
 // const dateReset = new Date(props.events.date);
 const form = useForm('post', route('events.store'), {
@@ -55,26 +56,6 @@ const onImageChange = (event) => {
         form.imagePreviews.push(previewUrl);
     }
 };
-
-const updateDateReset = (newValue) => {
-    if (!newValue) {
-        form.date = null;
-    } else {
-        const newDate = new Date(newValue);
-        if (!isNaN(newDate.getTime())) {
-            form.date = newDate;
-        }
-    }
-    validateDate();
-}
-
-// configuração de datas
-const isMenuOpen = ref(false);
-const formattedDate = computed(() => {
-    if (!form.date) return '';
-    const dateObj = new Date(form.date);
-    return dateObj.toLocaleDateString('pt-BR');
-});
 
 // Filtros e paginação
 const search = ref('');
@@ -123,6 +104,14 @@ const formatPhone = (phone) => {
     return phone.replace(phonePattern, '($1) $2-$3');
 };
 
+const showCreateEvent = ref(false);
+const openCreateEvent = () => {
+    showCreateEvent.value = true;
+}
+const closeCreateEvent = () => {
+    showCreateEvent.value = false;
+}
+
 // Modal deletar Eventos
 const showDelete = ref(false);
 const formDelete = ref();
@@ -150,6 +139,7 @@ const deleteEvent = () => {
         }
     });
 }
+
 </script>
 
 <template>
@@ -163,103 +153,10 @@ const deleteEvent = () => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <v-col cols="auto" class="flex justify-center mb-5">
-                        <v-dialog max-width="800">
-                            <template v-slot:activator="{ props: activatorProps }">
-                                <v-btn v-bind="activatorProps" color="primary" text="Incluir Eventos"
-                                    variant="flat"></v-btn>
-                            </template>
-
-                            <template v-slot:default="{ isActive }">
-                                <v-card title="Incluir Eventos">
-                                    <form @submit.prevent="submit">
-                                        <v-card-text>
-                                            <h2>Dados Pessoais:</h2>
-                                            <v-container>
-                                                <v-text-field label="Nome do Evento:*" v-model="form.name"
-                                                    variant="outlined" @change="form.validate('name')"></v-text-field>
-                                                <span v-if="form.invalid('name')" class="text-base text-red-500">
-                                                    {{ form.errors.name }}
-                                                </span>
-                                            </v-container>
-                                            <v-container>
-                                                <v-text-field label="Nome do Responsável:*" v-model="form.responsible"
-                                                    variant="outlined"
-                                                    @change="form.validate('responsible')"></v-text-field>
-                                                <span v-if="form.invalid('responsible')" class="text-base text-red-500">
-                                                    {{ form.errors.responsible }}
-                                                </span>
-                                            </v-container>
-                                            <v-container>
-                                                <v-text-field label="Telefone:*" v-model="form.phone" variant="outlined"
-                                                    v-mask="'(##) #####-####'"
-                                                    @change="form.validate('phone')"></v-text-field>
-                                                <span v-if="form.invalid('phone')" class="text-base text-red-500">
-                                                    {{ form.errors.phone }}
-                                                </span>
-                                            </v-container>
-                                            <v-container>
-                                                <v-text-field label="Selecione a data:*" v-model="form.date"
-                                                    v-bind="props" variant="outlined" type="datetime-local"
-                                                    @change="form.validate('date')"></v-text-field>
-                                                <span class="text-base text-red-500">
-                                                    {{ form.errors.date }}
-                                                </span>
-                                            </v-container>
-                                            <v-container>
-                                                <v-file-input label="Fotos:*" v-model="form.images" variant="outlined"
-                                                    @change="onImageChange" chips multiple></v-file-input>
-                                                <div v-if="form.invalid('photos')" class="font-semibold text-red-500">
-                                                    {{ form.errors.photos }}
-                                                </div>
-                                                <!-- Container para pré-visualizações de fotos com Tailwind CSS -->
-                                                <v-container class="flex flex-wrap -m-1">
-                                                    <div v-for="(previewUrl, index) in form.imagePreviews" :key="index"
-                                                        class="p-1">
-                                                        <img :src="previewUrl"
-                                                            class="h-24 w-24 object-cover rounded-lg" />
-                                                    </div>
-                                                </v-container>
-                                            </v-container>
-
-                                            <h2>Endereço:</h2>
-                                            <v-container class="grid gap-4 mb-7">
-                                                <v-container>
-                                                    <v-text-field label="Estado" v-model="form.state"
-                                                        variant="outlined"></v-text-field>
-                                                </v-container>
-                                                <v-container>
-                                                    <v-text-field label="Cidade" v-model="form.city"
-                                                        variant="outlined"></v-text-field>
-                                                </v-container>
-                                                <v-container>
-                                                    <v-text-field label="Bairro" v-model="form.neighborhood"
-                                                        variant="outlined"></v-text-field>
-                                                </v-container>
-                                                <v-container class="flex gap-4">
-                                                    <v-text-field label="Rua" v-model="form.street"
-                                                        variant="outlined"></v-text-field>
-                                                    <v-text-field label="Número" v-model="form.number"
-                                                        variant="outlined"></v-text-field>
-                                                </v-container>
-                                                <v-container>
-                                                    <v-textarea label="Complemento" v-model="form.complement"
-                                                        variant="outlined"></v-textarea>
-                                                </v-container>
-                                            </v-container>
-                                        </v-card-text>
-
-                                        <v-card-actions>
-                                            <v-spacer></v-spacer>
-
-                                            <v-btn text="Cancelar" @click="isActive.value = false"></v-btn>
-                                            <v-btn type="submit">Salvar</v-btn>
-                                        </v-card-actions>
-                                    </form>
-                                </v-card>
-                            </template>
-                        </v-dialog>
-                    </v-col>
+                    
+                    <div class="m-4 flex justify-center items-center">
+                        <v-btn @click="openCreateEvent" color="primary" text="Incluir Evento" variant="flat"></v-btn>
+                    </div>
 
                     <v-card title="Pessoas" flat>
                         <template v-slot:text>
@@ -319,6 +216,84 @@ const deleteEvent = () => {
             </div>
         </div>
     </AppLayout>
+    <!-- modal para Criar eventos -->
+    <Modal :show="showCreateEvent" @close="closeCreateEvent">
+        <v-card title="Incluir Eventos">
+            <form @submit.prevent="submit">
+                <v-card-text>
+                    <h2>Dados Pessoais:</h2>
+                    <v-container>
+                        <v-text-field label="Nome do Evento:*" v-model="form.name" variant="outlined"
+                            @change="form.validate('name')"></v-text-field>
+                        <span v-if="form.invalid('name')" class="text-base text-red-500">
+                            {{ form.errors.name }}
+                        </span>
+                    </v-container>
+                    <v-container>
+                        <v-text-field label="Nome do Responsável:*" v-model="form.responsible" variant="outlined"
+                            @change="form.validate('responsible')"></v-text-field>
+                        <span v-if="form.invalid('responsible')" class="text-base text-red-500">
+                            {{ form.errors.responsible }}
+                        </span>
+                    </v-container>
+                    <v-container>
+                        <v-text-field label="Telefone:*" v-model="form.phone" variant="outlined"
+                            v-mask="'(##) #####-####'" @change="form.validate('phone')"></v-text-field>
+                        <span v-if="form.invalid('phone')" class="text-base text-red-500">
+                            {{ form.errors.phone }}
+                        </span>
+                    </v-container>
+                    <v-container>
+                        <v-text-field label="Selecione a data:*" v-model="form.date" v-bind="props" variant="outlined"
+                            type="datetime-local" @change="form.validate('date')"></v-text-field>
+                        <span class="text-base text-red-500">
+                            {{ form.errors.date }}
+                        </span>
+                    </v-container>
+                    <v-container>
+                        <v-file-input label="Fotos:*" v-model="form.images" variant="outlined" @change="onImageChange"
+                            chips multiple></v-file-input>
+                        <div v-if="form.invalid('photos')" class="font-semibold text-red-500">
+                            {{ form.errors.photos }}
+                        </div>
+                        <!-- Container para pré-visualizações de fotos com Tailwind CSS -->
+                        <v-container class="flex flex-wrap -m-1">
+                            <div v-for="(previewUrl, index) in form.imagePreviews" :key="index" class="p-1">
+                                <img :src="previewUrl" class="h-24 w-24 object-cover rounded-lg" />
+                            </div>
+                        </v-container>
+                    </v-container>
+
+                    <h2>Endereço:</h2>
+                    <v-container>
+                        <v-container>
+                            <v-text-field label="Estado" v-model="form.state" variant="outlined"></v-text-field>
+                        </v-container>
+                        <v-container>
+                            <v-text-field label="Cidade" v-model="form.city" variant="outlined"></v-text-field>
+                        </v-container>
+                        <v-container>
+                            <v-text-field label="Bairro" v-model="form.neighborhood" variant="outlined"></v-text-field>
+                        </v-container>
+                        <v-container class="flex gap-4">
+                            <v-text-field label="Rua" v-model="form.street" variant="outlined"></v-text-field>
+                            <v-text-field label="Número" v-model="form.number" variant="outlined"></v-text-field>
+                        </v-container>
+                        <v-container>
+                            <v-textarea label="Complemento" v-model="form.complement" variant="outlined"></v-textarea>
+                        </v-container>
+                    </v-container>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn text="Cancelar" @click="closeCreateEvent"></v-btn>
+                    <v-btn type="submit">Salvar</v-btn>
+                </v-card-actions>
+            </form>
+        </v-card>
+    </Modal>
 
     <!-- Exclusão de Eventos -->
     <Modal :show="showDelete" @close="closeDeleteModal">
